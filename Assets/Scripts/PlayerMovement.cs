@@ -24,32 +24,21 @@ public class PlayerMovement : MonoBehaviour
     public int PlayerHealth = 3;
 
     private Rigidbody2D rb;
+    private Animator pAni;
     public bool isGrounded;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        pAni = GetComponent<Animator>();
     }
     private void Update()
     {
 
-        /*float direction = Input.GetAxis("Horizontal");
-
-        if ( direction > 0)
-        {
-            transform.localScale = new Vector3(1,1,1);
-
-        }
-        else if ( direction < 0)
-        {
-            transform.localScale = new Vector3 (-1,1,1);
-        }
-
-        PlayerDirection = direction;*/
-
         #region 플레이어 이동
         float moveInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+        
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
@@ -57,11 +46,24 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
+
+        if (moveInput > 0)
+        {
+            transform.localScale = new Vector3(-0.15f, 0.15f, 1);
+            pAni.SetBool("Run",true);
+        }
+        else if (moveInput < 0)
+        {
+            transform.localScale = new Vector3(0.15f, 0.15f, 1);
+            pAni.SetBool("Run",true);
+        }
+        else if (moveInput == 0)
+            pAni.SetBool("Run",false);
         //넉백 플레이어 강제 이동 + 플레이어 스턴
         #endregion
 
 
-        if(isKnockedBack)
+        if (isKnockedBack)
         {
             KnockBackTimer -= Time.deltaTime;
 
@@ -94,14 +96,7 @@ public class PlayerMovement : MonoBehaviour
             TakeDamage(collision.transform.position - transform.position);
         }
     }
-    /*private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if ( collision.CompareTag("Enemy"))         
-        {
-            PlayerHealth --;
-            TakeDamage(collision.transform.position - transform.position);
-        }
-    }*/
+
     #region 너 못해
     public void TakeDamage(Vector2 playerDirection)
     {

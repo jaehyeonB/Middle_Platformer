@@ -5,7 +5,7 @@ using UnityEngine;
 public class Null : MonoBehaviour
 {
 
-    public float moveSpeed = 3.0f;
+    public float moveSpeed = 2.0f;
     public float raycastDistance = .2f;
     public float traceDistance = 2f;
 
@@ -39,5 +39,13 @@ public class Null : MonoBehaviour
                 transform.Translate(direction * moveSpeed * Time.deltaTime);
             }
         }
+
     }
+    /*private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            
+        }
+    }*/
 }
