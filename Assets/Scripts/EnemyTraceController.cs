@@ -5,7 +5,7 @@ using UnityEngine;
 public class Null : MonoBehaviour
 {
 
-    public float moveSpeed = 2.0f;
+    public float moveSpeed = 0.75f;
     public float raycastDistance = .2f;
     public float traceDistance = 2f;
 
