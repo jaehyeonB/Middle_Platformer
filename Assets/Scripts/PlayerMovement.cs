@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public float PlayerDirection = 0;
     
     [Header("플레이어 넉백")]
-    public float knockbackForce = 7.0f;             //넉백 힘
+    public float knockbackForce = 10.0f;             //넉백 힘
     public float knockbackDuration = -1.5f;         //넉백 지속 시간
     private bool isKnockedBack = false;             //넉백이 되었는가
     private float KnockBackTimer = 0f;              //넉백 타이머
@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
             collision.GetComponent<LevelObject>().MovetoNextLevel();
         }
 
-        if ( collision.CompareTag("Enemy"))         
+        if ( collision.CompareTag("Tramp"))         
         {
             PlayerHealth --;
             TakeDamage(collision.transform.position - transform.position);
