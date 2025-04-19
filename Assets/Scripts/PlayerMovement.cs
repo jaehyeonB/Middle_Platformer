@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,18 +16,25 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundLayer;
     public float PlayerDirection = 0;
 
-    [Header("플레이어 넉백")]
-    public float BounceForce = 10.0f;             
-    public float BounceDuration = -1.5f;         
-    private bool isBouncedBack = false;             
-    private float BounceTimer = 0f;              
+    [Header("플레이어 튕김")]
+    public float BounceForce = 3f;
+    public float BounceDuration = -0.5f;
+    private bool isBouncedBack = false;
+    private float BounceTimer = 0f;
 
     [Header("플레이어 HP")]
-    public int PlayerHealth = 3;
+    public GameObject Heart1;
+    public GameObject Heart2;
+    public GameObject Heart3;
+    public int MaxHealth = 3;
+    public int currentHealth = 3;
+
 
     private Rigidbody2D rb;
     private Animator pAni;
     public bool isGrounded;
+
+
 
     private void Awake()
     {
@@ -36,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         #region 플레이어 이동
-        if(!isBouncedBack)
+        if (!isBouncedBack)
         {
             float moveInput = Input.GetAxisRaw("Horizontal");
             rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
@@ -47,32 +56,23 @@ public class PlayerMovement : MonoBehaviour
             if (isGrounded && Input.GetKeyDown(KeyCode.Space))
             {
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-                pAni.SetBool("Jump", true);
-             
             }
-            if(isGrounded == true)
-            {
-                pAni.SetBool("Jump", false);
-            }
+
 
             if (moveInput > 0)
             {
                 transform.localScale = new Vector3(-0.15f, 0.15f, 1);
-                if (isGrounded == true)
-                {
-                    pAni.SetBool("Run", true);
-                }
+                pAni.SetBool("Run", true);
             }
             else if (moveInput < 0)
             {
                 transform.localScale = new Vector3(0.15f, 0.15f, 1);
-                if (isGrounded == true)
-                {
-                    pAni.SetBool("Run", true);
-                }
+                pAni.SetBool("Run", true);
             }
-            else if (moveInput == 0 && isGrounded == true)
+            else if (moveInput == 0)
+            {
                 pAni.SetBool("Run", false);
+            }
         }
         //넉백 플레이어 강제 이동 + 플레이어 스턴
         #endregion
@@ -87,10 +87,12 @@ public class PlayerMovement : MonoBehaviour
                 isBouncedBack = false;
             }
         }
+
+
     }
     void Start()
     {
-
+        currentHealth = MaxHealth;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -107,7 +109,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (collision.CompareTag("Tramp"))
         {
-            PlayerHealth--;
             Trampoline(collision.transform.position - transform.position);
         }
     }
@@ -121,36 +122,71 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = Vector2.zero;
             rb.AddForce(-playerDirection.normalized * BounceForce, ForceMode2D.Impulse);
 
-           isBouncedBack = true;
-           BounceTimer = BounceDuration;
+            isBouncedBack = true;
+            BounceTimer = BounceDuration;
         }
     }
     #endregion
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Enemy")
-        { 
+        {
             OnDamaged(collision.transform.position);
         }
     }
     void OnDamaged(Vector2 targetPos)
     {
         gameObject.layer = 11;
+        currentHealth--;
 
         rb.velocity = Vector2.zero;
 
         int dirc = transform.position.x - targetPos.x > 0 ? 1 : -1;
-        
+
         rb.velocity = new Vector2(dirc * 2f, 4f);
-        
+
         isBouncedBack = true;
         BounceTimer = 0.75f;
 
-        Invoke("OffDamaged", 3f);
+        if(currentHealth == 3)
+        {
+            Heart1.SetActive(true);
+            Heart2.SetActive(true);
+            Heart3.SetActive(true);
+        }
+        else if(currentHealth == 2)
+        {
+            Heart1.SetActive(true);
+            Heart2.SetActive(true);
+            Heart3.SetActive(false);
+        }
+        else if(currentHealth == 1)
+        {
+            Heart1.SetActive(true);
+            Heart2.SetActive(false);
+            Heart3.SetActive(false);
+        }
+        else if (currentHealth == 0)
+        {
+            Heart1.SetActive(false);
+            Heart2.SetActive(false);
+            Heart3.SetActive(false);
+            gameObject.SetActive(false);
+            Invoke("PlayerDeath", 3f);
+
+        }
+            Invoke("OffDamaged", 3f);
     }
     void OffDamaged()
     {
         gameObject.layer = 10;
     }
+
+    void PlayerDeath()
+    {
+        SceneManager.LoadScene("Title");
+    }
 }
+
+    
 
