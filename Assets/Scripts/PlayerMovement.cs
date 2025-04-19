@@ -29,6 +29,8 @@ public class PlayerMovement : MonoBehaviour
     public int MaxHealth = 3;
     public int currentHealth = 3;
 
+    private bool isAttacking = false;
+
 
     private Rigidbody2D rb;
     private Animator pAni;
@@ -44,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
 
-        #region 플레이어 이동
+        #region 플레이어 이동 + 체력 UI
         if (!isBouncedBack)
         {
             float moveInput = Input.GetAxisRaw("Horizontal");
@@ -73,6 +75,33 @@ public class PlayerMovement : MonoBehaviour
             {
                 pAni.SetBool("Run", false);
             }
+
+            if (currentHealth == 3)
+            {
+                Heart1.SetActive(true);
+                Heart2.SetActive(true);
+                Heart3.SetActive(true);
+            }
+            else if (currentHealth == 2)
+            {
+                Heart1.SetActive(true);
+                Heart2.SetActive(true);
+                Heart3.SetActive(false);
+            }
+            else if (currentHealth == 1)
+            {
+                Heart1.SetActive(true);
+                Heart2.SetActive(false);
+                Heart3.SetActive(false);
+            }
+            else if (currentHealth == 0)
+            {
+                Heart1.SetActive(false);
+                Heart2.SetActive(false);
+                Heart3.SetActive(false);
+                gameObject.SetActive(false);
+                Invoke("PlayerDeath", 1.5f);
+            }
         }
         //넉백 플레이어 강제 이동 + 플레이어 스턴
         #endregion
@@ -87,6 +116,7 @@ public class PlayerMovement : MonoBehaviour
                 isBouncedBack = false;
             }
         }
+
 
 
     }
@@ -111,6 +141,12 @@ public class PlayerMovement : MonoBehaviour
         {
             Trampoline(collision.transform.position - transform.position);
         }
+        if (collision.CompareTag("DeadZone"))
+        {
+            currentHealth--;
+
+            transform.position = new Vector2(-4, 0);
+        }
     }
 
     #region 너 못해
@@ -131,6 +167,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
+            
             OnDamaged(collision.transform.position);
         }
     }
@@ -148,34 +185,7 @@ public class PlayerMovement : MonoBehaviour
         isBouncedBack = true;
         BounceTimer = 0.75f;
 
-        if(currentHealth == 3)
-        {
-            Heart1.SetActive(true);
-            Heart2.SetActive(true);
-            Heart3.SetActive(true);
-        }
-        else if(currentHealth == 2)
-        {
-            Heart1.SetActive(true);
-            Heart2.SetActive(true);
-            Heart3.SetActive(false);
-        }
-        else if(currentHealth == 1)
-        {
-            Heart1.SetActive(true);
-            Heart2.SetActive(false);
-            Heart3.SetActive(false);
-        }
-        else if (currentHealth == 0)
-        {
-            Heart1.SetActive(false);
-            Heart2.SetActive(false);
-            Heart3.SetActive(false);
-            gameObject.SetActive(false);
-            Invoke("PlayerDeath", 3f);
-
-        }
-            Invoke("OffDamaged", 3f);
+        Invoke("OffDamaged", 3f);
     }
     void OffDamaged()
     {
@@ -186,6 +196,8 @@ public class PlayerMovement : MonoBehaviour
     {
         SceneManager.LoadScene("Title");
     }
+
+
 }
 
     
