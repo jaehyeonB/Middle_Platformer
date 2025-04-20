@@ -168,6 +168,11 @@ public class PlayerMovement : MonoBehaviour
             
             OnDamaged(collision.transform.position);
         }
+
+        if(collision.gameObject.tag == "SpeedPotion")
+        {
+            SpeedPotion();
+        }
     }
     public void OnDamaged(Vector2 targetPos)
     {
@@ -195,7 +200,17 @@ public class PlayerMovement : MonoBehaviour
         SceneManager.LoadScene("Title");
     }
 
+    void SpeedPotion()
+    {
+        moveSpeed = 4f;
 
+        Invoke("PotionEnd", 5f);
+    }
+
+    void PotionEnd()
+    {
+        moveSpeed = 2f;
+    }
 }
 
     
