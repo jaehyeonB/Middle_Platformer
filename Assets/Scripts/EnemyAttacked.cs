@@ -70,8 +70,8 @@ public class EnemyAttacked : MonoBehaviour
         {
             Speedpotion.SetActive(true);
             Speedpotion.transform.position = transform.position;
-            //Destroy(gameObject);
-            gameObject.SetActive(false);
+            Destroy(gameObject);
+            
         }
     }
 }

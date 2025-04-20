@@ -8,8 +8,8 @@ public class BossMove : MonoBehaviour
     public float maxHealth = 1000;             // 보스 최대 체력
     private float currentHealth;               // 현재 체력
 
-    public float moveSpeed = 1.5f;             // 이동 속도
-    public float attackRange = 2f;             // 공격 사거리
+    public float moveSpeed = 1f;             // 이동 속도
+    public float attackRange = 1f;             // 공격 사거리
     public int meleeDamage = 30;               // 기본 근접 공격 데미지
     public float attackCooldown = 2f;          // 공격 쿨타임
 
@@ -68,6 +68,7 @@ public class BossMove : MonoBehaviour
         transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
         animator.SetBool("isMoving", true); // 걷기 애니메이션
     }
+    
 
     // 기본 근접 공격
     void MeleeAttack()
