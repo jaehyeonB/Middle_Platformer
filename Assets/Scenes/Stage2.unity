@@ -5573,6 +5573,10 @@ PrefabInstance:
       propertyPath: attackPoint
       value: 
       objectReference: {fileID: 621215391}
+    - target: {fileID: -746278979133722896, guid: aaf07d334024b2a4b876b8e93fd7245b, type: 3}
+      propertyPath: attackRange
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2754671614102842266, guid: aaf07d334024b2a4b876b8e93fd7245b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.6
@@ -5599,7 +5603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6446907252609570100, guid: aaf07d334024b2a4b876b8e93fd7245b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.06
+      value: -4.08
       objectReference: {fileID: 0}
     - target: {fileID: 6446907252609570100, guid: aaf07d334024b2a4b876b8e93fd7245b, type: 3}
       propertyPath: m_LocalPosition.y

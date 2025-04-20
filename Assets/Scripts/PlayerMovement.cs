@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using UnityEditor.SearchService;
+//using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,8 +28,6 @@ public class PlayerMovement : MonoBehaviour
     public GameObject Heart3;
     public int MaxHealth = 3;
     public int currentHealth = 3;
-
-    private bool isAttacking = false;
 
 
     private Rigidbody2D rb;
@@ -171,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
             OnDamaged(collision.transform.position);
         }
     }
-    void OnDamaged(Vector2 targetPos)
+    public void OnDamaged(Vector2 targetPos)
     {
         gameObject.layer = 11;
         currentHealth--;

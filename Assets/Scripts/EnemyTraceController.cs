@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Null : MonoBehaviour
+public class EnemyTraceController : MonoBehaviour
 {
 
     public float moveSpeed = 0.75f;
@@ -10,13 +10,17 @@ public class Null : MonoBehaviour
     public float traceDistance = 2f;
 
     private Transform player;
+    private Rigidbody2D rb;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
+
+
         Vector2 direction = player.position - transform.position;
 
         if(direction.magnitude > traceDistance)
@@ -39,6 +43,8 @@ public class Null : MonoBehaviour
                 transform.Translate(direction * moveSpeed * Time.deltaTime);
             }
         }
+
+
 
     }
     /*private void OnCollisionEnter2D(Collision2D collision)

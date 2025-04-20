@@ -6,7 +6,7 @@ public class PlayerAttack : MonoBehaviour
 {
     [Header("플레이어 공격")]
     public Transform attackPoint;        
-    public float attackRange = 0.5f;     
+    public float attackRange = 1f;     
     public LayerMask enemyLayers;        
     public int attackDamage = 10;
 
